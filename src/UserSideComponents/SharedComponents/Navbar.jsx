@@ -1,61 +1,51 @@
-import React, { useEffect, useState, useRef } from "react";
-import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
+
+import React, { useEffect, useState } from "react";
+import { assets } from "../../assets/assets";
+import { Link, useLocation } from "react-router-dom";
+import { isLoggedIn, logout } from "../../utils/auth";
+ 
 const Navbar = () => {
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Hotels", path: "/rooms" },
-    { name: "Experience", path: "/" },
-    { name: "About", path: "/" },
-  ];
+  const location = useLocation();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // useEffect(() => {
+  const linkStyle = (base = "") =>
+    `group flex flex-col gap-0.5 ${
+      isScrolled ? "text-gray-700" : "text-white"
+    } ${base}`;
 
-  //   if(location.pathname !=='/'){
-  //     setIsScrolled(true);
-  //     return;
-  //   }else{
-  //     setIsScrolled(false);
-  //   }
-  //   // setIsScrolled(prev=> location.pathname !=='/' ? true: prev);
+  const underlineStyle = isScrolled ? "bg-gray-700" : "bg-white";
 
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Hotels", path: "/rooms" },
+    { name: "Dashboard", path: "/login", auth: false },
+    { name: "List Your Hotel", path: "/hotel-reg", auth: false },
+    { name: "My Bookings", path: isLoggedIn() ? "/my-bookings" : "/login" },
+  ];
 
-  //   const handleScroll = () => {
-  //     setIsScrolled(window.scrollY > 10);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, [location.pathname]);
-  
-useEffect(() => {
-  const handleScroll = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      if (location.pathname === "/") {
+        setIsScrolled(window.scrollY > 10);
+      }
+    };
+
     if (location.pathname === "/") {
       setIsScrolled(window.scrollY > 10);
+    } else {
+      setIsScrolled(true);
     }
-  };
 
-  // Set initial state based on route
-  if (location.pathname === "/") {
-    setIsScrolled(window.scrollY > 10); // check immediately
-  } else {
-    setIsScrolled(true); // always solid on other pages
-  }
-
-  // Always listen to scroll, but handle conditionally inside
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [location.pathname]);
-
-
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [location.pathname]);
 
   return (
     <nav
-      className={` fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${
+      className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${
         isScrolled
           ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4"
           : "py-4 md:py-6"
@@ -73,29 +63,27 @@ useEffect(() => {
 
       {/* Desktop Nav */}
       <div className="hidden md:flex items-center gap-4 lg:gap-8">
-        {navLinks.map((link, i) => (
-          <a
-            key={i}
-            href={link.path}
-            className={`group flex flex-col gap-0.5 ${
-              isScrolled ? "text-gray-700" : "text-white"
-            }`}
+        {navLinks.map((link, i) => {
+          if (link.auth === false && isLoggedIn()) return null; // Hide Dashboard/ListHotel if logged in
+          return (
+            <Link key={i} to={link.path} className={linkStyle()}>
+              {link.name}
+              <div
+                className={`${underlineStyle} h-0.5 w-0 group-hover:w-full transition-all duration-300`}
+              />
+            </Link>
+          );
+        })}
+
+        {isLoggedIn() && (
+          <span
+            onClick={logout}
+            className={`${linkStyle("cursor-pointer text-red-600 hover:text-red-800")}`}
           >
-            {link.name}
-            <div
-              className={`${
-                isScrolled ? "bg-gray-700" : "bg-white"
-              } h-0.5 w-0 group-hover:w-full transition-all duration-300`}
-            />
-          </a>
-        ))}
-        <button
-          className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${
-            isScrolled ? "text-black" : "text-white"
-          } transition-all`}
-        >
-          Dashboard
-        </button>
+            Logout
+            <div className="h-0.5 w-0 group-hover:w-full bg-red-600 transition-all duration-300" />
+          </span>
+        )}
       </div>
 
       {/* Desktop Right */}
@@ -103,17 +91,18 @@ useEffect(() => {
         <img
           src={assets.searchIcon}
           alt="search"
-          className={`${
-            isScrolled && "invert"
-          } h-7 transition-all duration-500`}
+          className={`${isScrolled && "invert"} h-7 transition-all duration-500`}
         />
-        <button
-          className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${
-            isScrolled ? "text-white bg-black" : "bg-white text-black"
-          }`}
-        >
-          Login
-        </button>
+        {!isLoggedIn() && (
+          <Link
+            to="/login"
+            className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${
+              isScrolled ? "text-white bg-black" : "bg-white text-black"
+            }`}
+          >
+            Login
+          </Link>
+        )}
       </div>
 
       {/* Mobile Menu Button */}
@@ -121,8 +110,8 @@ useEffect(() => {
         <img
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           src={assets.menuIcon}
-          alt=""
-          className={`${isScrolled && "invert"} h-4 `}
+          alt="menu"
+          className={`${isScrolled && "invert"} h-4`}
         />
       </div>
 
@@ -136,22 +125,39 @@ useEffect(() => {
           className="absolute top-4 right-4"
           onClick={() => setIsMenuOpen(false)}
         >
-          <img src={assets.closeIcon} alt="close-menu" className="h-6.5" />
+          <img src={assets.closeIcon} alt="close" className="h-6.5" />
         </button>
 
-        {navLinks.map((link, i) => (
-          <a key={i} href={link.path} onClick={() => setIsMenuOpen(false)}>
-            {link.name}
-          </a>
-        ))}
+        {navLinks.map((link, i) => {
+          if (link.auth === false && isLoggedIn()) return null;
+          return (
+            <Link
+              key={i}
+              to={link.path}
+              onClick={() => setIsMenuOpen(false)}
+              className="text-lg"
+            >
+              {link.name}
+            </Link>
+          );
+        })}
 
-        <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-          Dashboard
-        </button>
-
-        <button className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
-          Login
-        </button>
+        {!isLoggedIn() ? (
+          <Link
+            to="/login"
+            onClick={() => setIsMenuOpen(false)}
+            className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500"
+          >
+            Login
+          </Link>
+        ) : (
+          <button
+            onClick={logout}
+            className="text-red-600 hover:text-red-800 transition-all text-lg"
+          >
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );

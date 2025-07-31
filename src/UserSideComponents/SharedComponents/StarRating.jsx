@@ -12,7 +12,7 @@ const StarRating = ({ rating = 4 }) => {
               rating > index ? assets.starIconFilled : assets.starIconOutlined
             }
             alt="star-icon"
-            className="h-4.5 w-4.5"
+            className="h-4.5 w-4.5" key={index}
           />
         ))}
     </>
