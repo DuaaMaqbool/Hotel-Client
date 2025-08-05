@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useState } from "react";
 import Title from "../../UserSideComponents/SharedComponents/Title";
 import { assets } from "../../assets/assets";
@@ -13,7 +9,7 @@ const Addroom = () => {
     3: null,
     4: null,
   });
-  
+
   const [inputs, setIputs] = useState({
     roomType: "",
     pricePerNight: 0,
@@ -41,12 +37,14 @@ const Addroom = () => {
 
           {/* Image Upload Section */}
           <div className="mt-8">
-            <p className="text-gray-700 mb-4 text-lg font-medium">Room Images</p>
+            <p className="text-gray-700 mb-4 text-lg font-medium">
+              Room Images
+            </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {Object.keys(images).map((key) => (
-                <label 
-                  htmlFor={`roomImage${key}`} 
-                  key={key} 
+                <label
+                  htmlFor={`roomImage${key}`}
+                  key={key}
                   className="cursor-pointer group"
                 >
                   <div className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center overflow-hidden hover:border-indigo-300 transition-colors">
@@ -59,13 +57,15 @@ const Addroom = () => {
                     ) : (
                       <div className="text-center p-4">
                         <div className="bg-gray-100 rounded-lg w-10 h-10 mx-auto flex items-center justify-center mb-2">
-                          <img 
-                            src={assets.uploadArea} 
-                            alt="Upload icon" 
+                          <img
+                            src={assets.uploadArea}
+                            alt="Upload icon"
                             className="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity"
                           />
                         </div>
-                        <span className="text-gray-500 text-xs block">Image {key}</span>
+                        <span className="text-gray-500 text-xs block">
+                          Image {key}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -87,7 +87,9 @@ const Addroom = () => {
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Room Type */}
             <div>
-              <label className="text-gray-700 block mb-2 font-medium">Room Type</label>
+              <label className="text-gray-700 block mb-2 font-medium">
+                Room Type
+              </label>
               <select
                 value={inputs.roomType}
                 onChange={(e) =>
@@ -102,14 +104,19 @@ const Addroom = () => {
                 <option value="Family Suite">Family Suite</option>
               </select>
             </div>
-            
+
             {/* Price */}
             <div>
               <label className="text-gray-700 block mb-2 font-medium">
-                Price <span className="text-gray-500 text-sm font-normal">/night</span>
+                Price{" "}
+                <span className="text-gray-500 text-sm font-normal">
+                  /night
+                </span>
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                  $
+                </span>
                 <input
                   type="number"
                   placeholder="0"
@@ -126,11 +133,13 @@ const Addroom = () => {
 
           {/* Amenities Section */}
           <div className="mt-8">
-            <label className="text-gray-700 block mb-3 font-medium">Amenities</label>
+            <label className="text-gray-700 block mb-3 font-medium">
+              Amenities
+            </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {Object.keys(inputs.amenities).map((amenity, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-indigo-50 transition-colors"
                 >
                   <input
@@ -148,8 +157,8 @@ const Addroom = () => {
                     }
                     className="h-4 w-4 text-indigo-600 rounded focus:ring-indigo-500"
                   />
-                  <label 
-                    htmlFor={`amenities${index + 1}`} 
+                  <label
+                    htmlFor={`amenities${index + 1}`}
                     className="ml-3 text-gray-700 text-sm"
                   >
                     {amenity}
@@ -161,8 +170,8 @@ const Addroom = () => {
 
           {/* Submit Button */}
           <div className="mt-10 flex justify-end">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="py-3 px-8 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white rounded-lg font-medium shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Add Room

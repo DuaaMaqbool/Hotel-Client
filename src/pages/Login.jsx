@@ -1,196 +1,98 @@
-// import React, { useState } from "react";
-// import { useNavigate, Link } from "react-router-dom";
-
-
-
-// const Login = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [errorMsg, setErrorMsg] = useState("");
-
-//   const navigate = useNavigate();
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   setErrorMsg('');
-
-//   if (!email || !password) {
-//     setErrorMsg('Both fields are required');
-//     return;
-//   }
-
-//   try {
-//     const res = await axios.post('http://localhost:3000/api/auth/login', {
-//       email,
-//       password,
-//     }); // 🍪 Cookies are sent and received automatically
-
-//     console.log(res.data.message); // Login successful
-
-//     // Optionally fetch user data or redirect
-//     navigate('/'); // or wherever you want
-//   } catch (err) {
-//     setErrorMsg(err.response?.data?.message || 'Login failed');
-//   }
-// };
-
-
-//   return (
-//     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 px-4">
-//       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-//         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-
-//         {errorMsg && (
-//           <p className="text-red-500 text-sm mb-4 text-center">{errorMsg}</p>
-//         )}
-
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           <input
-//             type="email"
-//             placeholder="Email"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//           />
-
-//           <input
-//             type="password"
-//             placeholder="Password"
-//             className="w-full px-4 py-2 border rounded-md"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//           />
-
-//           <button
-//             type="submit"
-//             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-//           >
-//             Log In
-//           </button>
-//         </form>
-
-//         <div className="text-sm text-center mt-4 space-y-1">
-//           <p>
-//             Don’t have an account?{" "}
-//             <Link to="/signup" className="text-blue-600 hover:underline">
-//               Sign up
-//             </Link>
-//           </p>
-//           <p>
-//             <Link
-//               to="/forgot-password"
-//               className="text-blue-600 hover:underline"
-//             >
-//               Forgot your password?
-//             </Link>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;
-
-
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { assets } from "../assets/assets";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorMsg, setErrorMsg] = useState('');
-    const [loading, setLoading] = useState(false); // Added loading state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    const navigate = useNavigate();
+  // Use the useAuth hook to get the login function from the context
+  const { login } = useAuth();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setErrorMsg('');
-        setLoading(true); // Set loading to true on submit
+  const navigate = useNavigate();
 
-        if (!email || !password) {
-            setErrorMsg('Both fields are required');
-            setLoading(false);
-            return;
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-        try {
-            await axios.post('http://localhost:3000/api/auth/login', {
-                email,
-                password,
-            }, {
-                // 💡 FIX: This is the crucial part. It tells the browser to
-                // send and receive the authentication cookie.
-                withCredentials: true, 
-            }); 
+    try {
+      await login(email, password, navigate);
+    } catch (err) {
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      // Reset loading state whether the login succeeded or failed.
+      setLoading(false);
+    }
+  };
 
-            console.log("Login successful. Navigating to homepage.");
-            navigate('/');
-        } catch (err) {
-            console.error("Login failed:", err.response?.data?.message || err.message);
-            setErrorMsg(err.response?.data?.message || 'Login failed');
-        } finally {
-            setLoading(false); // Ensure loading is set to false after the request finishes
-        }
-    };
-
-    return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100 px-4">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-                <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-
-                {errorMsg && (
-                    <p className="text-red-500 text-sm mb-4 text-center">{errorMsg}</p>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        className="w-full px-4 py-2 border rounded-md"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="w-full px-4 py-2 border rounded-md"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-                        disabled={loading} // Disable the button while loading
-                    >
-                        {loading ? "Logging in..." : "Log In"}
-                    </button>
-                </form>
-
-                <div className="text-sm text-center mt-4 space-y-1">
-                    <p>
-                        Don’t have an account?{" "}
-                        <Link to="/signup" className="text-blue-600 hover:underline">
-                            Sign up
-                        </Link>
-                    </p>
-                    <p>
-                        <Link
-                            to="/forgot-password"
-                            className="text-blue-600 hover:underline"
-                        >
-                            Forgot your password?
-                        </Link>
-                    </p>
-                </div>
-            </div>
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-md">
+        <div className="text-center mb-6">
+          <img src={assets.logo} alt="Logo" className="mx-auto w-24 mb-4" />
+          <h2 className="text-3xl font-bold text-gray-800">Login</h2>
+          <p className="text-gray-500">Welcome back!</p>
         </div>
-    );
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-700">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div className="text-right text-sm">
+            <Link
+              to="/forgot-password"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md font-semibold hover:bg-blue-700 transition duration-300 disabled:bg-blue-400"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-gray-600 text-sm">
+          Don't have an account?{" "}
+          <Link
+            to="/signup"
+            className="font-medium text-blue-600 hover:underline"
+          >
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

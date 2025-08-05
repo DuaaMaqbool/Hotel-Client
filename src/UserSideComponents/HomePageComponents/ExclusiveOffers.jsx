@@ -19,7 +19,7 @@ const ExclusiveOffers = () => {
             className="group-hover:translate-x-1 transition-all"
           />
         </button>
-      </div> 
+      </div>
 
       {/* Exclusive offers grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
@@ -36,7 +36,9 @@ const ExclusiveOffers = () => {
               <div>
                 <p className="text-2xl font-medium font-lora">{item?.title}</p>
                 <p>{item.description}</p>
-                <p className="text-xs text-white/70 mt-3">Expires {item.expiryDate}</p>
+                <p className="text-xs text-white/70 mt-3">
+                  Expires {item.expiryDate}
+                </p>
               </div>
               <button className="flex items-center gap-2 font-medium cursor-pointer mt-4 mb-5">
                 View Offers
@@ -59,4 +61,3 @@ const ExclusiveOffers = () => {
 };
 
 export default ExclusiveOffers;
-

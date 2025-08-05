@@ -4,7 +4,7 @@ import { assets, dashboardDummyData } from "../../assets/assets";
 
 const OwnerDashboard = () => {
   const [dashboardData, setDashboardData] = useState(dashboardDummyData);
-  
+
   return (
     <div className="bg-gray-50 min-h-screen p-4 sm:p-16">
       <div className="max-w-7xl mx-auto">
@@ -14,7 +14,7 @@ const OwnerDashboard = () => {
           title="Dashboard"
           subTitle="Monitor your room listings, track bookings and analyze revenue—all in one place. Stay updated with real-time insights to ensure smooth operations."
         />
-        
+
         {/* Stats Cards */}
         <div className="flex flex-wrap gap-4 my-8">
           {/* Total Bookings */}
@@ -28,14 +28,16 @@ const OwnerDashboard = () => {
                 />
               </div>
               <div className="ml-3">
-                <p className="text-gray-500 text-sm font-medium">Total Bookings</p>
+                <p className="text-gray-500 text-sm font-medium">
+                  Total Bookings
+                </p>
                 <p className="text-xl font-bold text-gray-800">
                   {dashboardData.totalBookings}
                 </p>
               </div>
             </div>
           </div>
-          
+
           {/* Total Revenue */}
           <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-200 flex-1 min-w-[200px]">
             <div className="flex items-center">
@@ -47,7 +49,9 @@ const OwnerDashboard = () => {
                 />
               </div>
               <div className="ml-3">
-                <p className="text-gray-500 text-sm font-medium">Total Revenue</p>
+                <p className="text-gray-500 text-sm font-medium">
+                  Total Revenue
+                </p>
                 <p className="text-xl font-bold text-gray-800">
                   ${dashboardData.totalRevenue}
                 </p>
@@ -62,14 +66,15 @@ const OwnerDashboard = () => {
             <h2 className="text-gray-800 text-lg sm:text-xl font-medium">
               Recent Bookings
             </h2>
-            
           </div>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="py-3 px-4 text-left text-gray-700 font-medium text-sm">User Name</th>
+                  <th className="py-3 px-4 text-left text-gray-700 font-medium text-sm">
+                    User Name
+                  </th>
                   <th className="py-3 px-4 text-left text-gray-700 font-medium text-sm max-sm:hidden">
                     Room Name
                   </th>
@@ -86,7 +91,6 @@ const OwnerDashboard = () => {
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="py-3 px-4 text-gray-700">
                       <div className="flex items-center">
-                        
                         {item.user.username}
                       </div>
                     </td>
@@ -97,14 +101,14 @@ const OwnerDashboard = () => {
                       ${item.totalPrice}
                     </td>
                     <td className="py-3 px-4 text-center">
-                      <span 
+                      <span
                         className={`inline-block py-1 px-3 rounded-full text-xs font-medium ${
-                          item.isPaid 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-amber-100 text-amber-700'
+                          item.isPaid
+                            ? "bg-green-100 text-green-700"
+                            : "bg-amber-100 text-amber-700"
                         }`}
                       >
-                        {item.isPaid ? 'Completed' : 'Pending'}
+                        {item.isPaid ? "Completed" : "Pending"}
                       </span>
                     </td>
                   </tr>

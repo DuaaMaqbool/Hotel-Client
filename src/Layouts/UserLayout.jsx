@@ -20,23 +20,22 @@
 // export default UserLayout;
 
 // src/layouts/Layout.jsx
-import React from 'react';
+import React from "react";
 
-import { Outlet } from 'react-router-dom';
-import Navbar from '../UserSideComponents/SharedComponents/Navbar';
-import Footer from '../UserSideComponents/SharedComponents/Footer';
+import { Outlet } from "react-router-dom";
+import Navbar from "../UserSideComponents/SharedComponents/Navbar";
+import Footer from "../UserSideComponents/SharedComponents/Footer";
 
 const UserLayout = () => {
   return (
     <>
-      <Navbar/>
-      <main className=' min-h-[70vh]'>
+      <Navbar />
+      <main className=" min-h-[70vh]">
         <Outlet />
       </main>
-      <Footer/>
+      <Footer />
     </>
   );
 };
 
 export default UserLayout;
-

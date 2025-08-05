@@ -50,7 +50,6 @@ import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ResetPassword from "./pages/ResetPassword";
 
-
 const App = () => {
   const isOwnerPath = useLocation().pathname.includes("owner");
 
@@ -64,9 +63,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/rooms" element={<AllRooms />} />
           <Route path="/rooms/:id" element={<RoomDetails />} />
-          <Route path="/my-bookings" element={<MyBookings />}/>
+          <Route path="/my-bookings" element={<MyBookings />} />
 
-          {/* <Route path="/hotel-reg" element={<HotelReg />} /> */}
+          <Route path="/hotel-reg" element={<HotelReg />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

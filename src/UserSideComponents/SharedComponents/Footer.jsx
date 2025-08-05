@@ -7,10 +7,15 @@ const Footer = () => {
     <div className="bg-[#F6F9FC] text-gray-500/80 pt-8 px-6 md:px-16 lg:px-24 xl:px-32">
       <div className="flex flex-wrap justify-between gap-12 md:gap-6">
         <div className="max-w-80">
-          
-          
-           <Link to='/' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-2xl font-lora font-semibold tracking-wide mb-4 h-8 md:h-9 text-gray-800"> JetSetStays</Link>
-          
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="text-2xl font-lora font-semibold tracking-wide mb-4 h-8 md:h-9 text-gray-800"
+          >
+            {" "}
+            JetSetStays
+          </Link>
+
           <p className="text-sm">
             Discover the world's most extraordinary places to stay, from
             boutique hotels to luxury villas & private islands.
@@ -93,7 +98,11 @@ const Footer = () => {
             />
             <button className="flex items-center justify-center bg-black h-9 w-9 aspect-square rounded-r">
               {/* Arrow icon */}
-             <img src={assets.arrowIcon} alt="arrow-icon" className="w-3.5 invert"/>
+              <img
+                src={assets.arrowIcon}
+                alt="arrow-icon"
+                className="w-3.5 invert"
+              />
             </button>
           </div>
         </div>
@@ -102,9 +111,15 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row gap-2 items-center justify-between py-5">
         <p>
           © {new Date().getFullYear()}{" "}
-          <Link to='/' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="font-lora">JetSetStays</Link>. All rights reserved.
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="font-lora"
+          >
+            JetSetStays
+          </Link>
+          . All rights reserved.
         </p>
-        
       </div>
     </div>
   );
