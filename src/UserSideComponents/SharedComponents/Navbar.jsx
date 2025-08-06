@@ -184,7 +184,7 @@ const Navbar = () => {
               }}
               className="text-red-600 hover:text-red-800 transition-all text-lg"
             >
-              Logout ({user.username})
+              Logout {user?.username}
             </button>
           </>
         ) : (
@@ -197,7 +197,7 @@ const Navbar = () => {
               Dashboard
             </Link>
             <Link
-              to="/hotel-reg"
+              to="/login"
               onClick={() => setIsMenuOpen(false)}
               className="text-lg"
             >
