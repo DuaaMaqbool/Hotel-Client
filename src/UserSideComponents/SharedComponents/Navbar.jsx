@@ -1,16 +1,27 @@
 import React from "react";
 import { assets } from "../../assets/assets";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Use the useAuth hook to get the global state and functions
   const { isAuthenticated, user, logout, isLoading } = useAuth();
 
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/"); // Redirect to home after logout
+  };
+
+  const handleMobileLogout = async () => {
+    await logout();
+    setIsMenuOpen(false);
+    navigate("/");
+  };
 
   const linkStyle = (base = "") =>
     `group flex flex-col gap-0.5 ${
@@ -86,7 +97,7 @@ const Navbar = () => {
               />
             </Link>
             <span
-              onClick={logout}
+              onClick={handleLogout}
               className={`${linkStyle(
                 "cursor-pointer text-red-600 hover:text-red-800"
               )}`}
@@ -178,10 +189,7 @@ const Navbar = () => {
               My Bookings
             </Link>
             <button
-              onClick={() => {
-                logout();
-                setIsMenuOpen(false);
-              }}
+              onClick={handleMobileLogout}
               className="text-red-600 hover:text-red-800 transition-all text-lg"
             >
               Logout {user?.username}

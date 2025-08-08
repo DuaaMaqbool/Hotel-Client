@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/auth";
 
 export const login = async (email, password) => {
   try {
     const response = await axios.post(
-      `${API_URL}/login`,
+      'http://localhost:3000/api/auth/login',
       { email, password },
       {
         withCredentials: true,
@@ -27,7 +26,7 @@ export const login = async (email, password) => {
 export const logout = async () => {
   try {
     await axios.post(
-      `${API_URL}/logout`,
+      'http://localhost:3000/api/auth/logout',
       {},
       {
         withCredentials: true,
@@ -42,7 +41,7 @@ export const logout = async () => {
 
 export const checkAuth = async () => {
   try {
-    const response = await axios.get(`${API_URL}/check-auth`, {
+    const response = await axios.get('http://localhost:3000/api/auth/check-auth', {
       withCredentials: true,
     });
     // The backend's response should contain the user object from the token.
