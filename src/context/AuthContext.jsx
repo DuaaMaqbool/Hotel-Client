@@ -9,6 +9,7 @@ import {
   logout as logoutAPI,
 } from "../utils/auth";
 
+
 // 1. Create the context
 const AuthContext = createContext(null);
 
@@ -19,6 +20,7 @@ export const useAuth = () => {
 
 // Assuming this is set up in your app
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+const currency = import.meta.env.VITE_CURRENCY || "$";
 
 // 3. Create the provider
 export const AuthProvider = ({ children }) => {
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   // New state variables to store user-specific data
   const [isOwner, setIsOwner] = useState(false);
+  const [showHotelReg, setShowHotelReg] = useState(false);
   const [searchedCities, setSearchedCities] = useState([]);
 
   // This is the new function you wanted to add.
@@ -61,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       const res = await axios.get("/api/user", { withCredentials: true });
       setUser(res.data.user);
     } catch (err) {
-      console.error("Error fetching user data:", err);
+      toast.error(error.message);
       setUser(null);
     }
   };
@@ -116,13 +119,19 @@ export const AuthProvider = ({ children }) => {
       } else {
         throw new Error("User object missing from login response");
       }
-
+      toast.success("Login successful");
       return { success: true };
+      
     } catch (error) {
-      console.error("Login failed:", error);
+      const errorMessage =
+              error?.message || "Login failed. Please check your credentials.";
+            console.log("Displaying error message:", errorMessage); // <-- Add this line
+            toast.error(errorMessage);
+      // toast.error("Login failed:", error);
       setIsAuthenticated(false);
       setUser(null);
       return { success: false, error: error.message };
+      
     }
   };
 
@@ -143,9 +152,15 @@ export const AuthProvider = ({ children }) => {
     user,
     isLoading,
     isOwner,
+    setIsOwner,
+    setSearchedCities,
     searchedCities,
     login: handleLogin,
     logout: handleLogout,
+    showHotelReg,
+    setShowHotelReg,
+    currency,
+    axios
   };
 
   // 8. Return provider

@@ -115,13 +115,17 @@ import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOTP from "./pages/VerifyOTP";
 import ResetPassword from "./pages/ResetPassword";
 import { Toaster } from "react-hot-toast";
+import { useAuth } from "./context/AuthContext";
 
 const App = () => {
   const isOwnerPath = useLocation().pathname.includes("owner");
-
+  const {setShowHotelReg} =useAuth();
   return (
     <div className="min-h-[70vh] relative">
       {!isOwnerPath}
+      {/* {setShowHotelReg && <HotelReg />} */}
+      {/* {false && <HotelReg />} */}
+   
       {false && <HotelReg />}
       <Toaster />
       <Routes>
@@ -133,6 +137,7 @@ const App = () => {
 
           <Route path="/hotel-reg" element={<HotelReg />} />
         </Route>
+       
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

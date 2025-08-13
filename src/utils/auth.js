@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 export const login = async (email, password) => {
@@ -32,6 +33,7 @@ export const logout = async () => {
         withCredentials: true,
       }
     );
+    toast.success("Logout successful");
     console.log("Logout successful");
   } catch (error) {
     console.error("Logout failed:", error);
